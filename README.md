@@ -6,7 +6,7 @@ A new Flutter application.
 
 This project is a starting point for a Flutter application.
 
-Application Sample Screens:
+Application Sample Screens:<br>
 <span>
 <img src="https://user-images.githubusercontent.com/70128869/113710508-6f1f0f00-9701-11eb-98d1-b9a1d3ee64e6.png" height="35%" width="35%">
 <img src="https://user-images.githubusercontent.com/70128869/113710515-70503c00-9701-11eb-93b9-4c3f56967e06.png" height="35%" width="35%">
