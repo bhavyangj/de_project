@@ -13,7 +13,6 @@ Application Sample Screens:<br>
 <img src="https://user-images.githubusercontent.com/70128869/113710515-70503c00-9701-11eb-93b9-4c3f56967e06.png" height="35%" width="35%">
 <img src="https://user-images.githubusercontent.com/70128869/113710516-70e8d280-9701-11eb-97ac-2fde4fc070d3.png" height="35%" width="35%">
 <img src="https://user-images.githubusercontent.com/70128869/113710518-70e8d280-9701-11eb-98f2-21c23e70842d.png" height="35%" width="35%">
-<img src="https://user-images.githubusercontent.com/70128869/113710519-71816900-9701-11eb-930f-6765628a12ac.png" height="35%" width="35%">
 <img src="https://user-images.githubusercontent.com/70128869/113710521-7219ff80-9701-11eb-8038-e1716145badb.png" height="35%" width="35%">
 <img src="https://user-images.githubusercontent.com/70128869/113710524-7219ff80-9701-11eb-91d3-9f98d0f8ee69.png" height="35%" width="35%">
 <img src="https://user-images.githubusercontent.com/70128869/113710526-72b29600-9701-11eb-97ce-4868d84c378e.png" height="35%" width="35%">
