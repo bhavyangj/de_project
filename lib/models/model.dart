@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 
 class model{
-  String purl, price, title, id, st;
+  String purl, price, title, id, st, location;
 
   // model(
   //     this.price,
@@ -21,7 +21,7 @@ class model{
     this.price = price;
     this.st = st;
     this.title = title;
-    this.id = id;
+    // this.location = loc;
   }
   String getPurl(){
     return purl;

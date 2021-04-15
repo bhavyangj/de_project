@@ -154,7 +154,19 @@ class _CartScreenState extends State<CartScreen> {
                       style: Theme.of(context).textTheme.bodyText1),
                 ],
               ),
-            )
+            ),
+            Text.rich(
+              TextSpan(
+                text: "Rs. ${purl}",
+                style: TextStyle(
+                    fontWeight: FontWeight.w600, color: kPrimaryColor),
+                children: [
+                  TextSpan(
+                      text: " x1",
+                      style: Theme.of(context).textTheme.bodyText1),
+                ],
+              ),
+            ),
           ],
         )
       ],
