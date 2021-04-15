@@ -24,19 +24,30 @@ class _SignFormState extends State<SignForm> {
   final FirebaseAuth auth = FirebaseAuth.instance;
   final List<String> errors = [];
 
-  checkAuthentification() async{
-    auth.authStateChanges().listen((user) {
-      if(user != null){
-        print(user);
-        Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => HomeScreen()));
-      }
-    });
+  Future<String> logIn() async {
+    String user = (await auth.signInWithEmailAndPassword(
+        email: _email, password: _password)).toString();
+    return user;
   }
+
+  // checkAuthentification() async{
+  //   auth.authStateChanges().listen((user) {
+  //     if(user != null){
+  //       print(user);
+  //       Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => HomeScreen()));
+  //     }
+  //   });
+  // }
 
   @override
   void initState(){
     super.initState();
-    this.checkAuthentification();
+    Future(() async{
+      if(await auth!=null){
+        // Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => LoginSuccessScreen()));
+      }
+    });
+    // this.checkAuthentification();
   }
 
   void addError({String error}) {
@@ -102,10 +113,11 @@ class _SignFormState extends State<SignForm> {
                 _formKey.currentState.save();
                 // if all are valid then go to success screen
                 KeyboardUtil.hideKeyboard(context);
-                Navigator.pushNamed(context, LoginSuccessScreen.routeName);
+                Future<String> check = logIn();
+                if(check!=null){
+                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => LoginSuccessScreen()));
+                }
               }
-              auth.signInWithEmailAndPassword(email: _email, password: _password);
-              Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => HomeScreen()));
             },
           ),
         ],
@@ -131,10 +143,10 @@ class _SignFormState extends State<SignForm> {
       validator: (value) {
         if (value.isEmpty) {
           addError(error: kPassNullError);
-          return "";
+          return "Please Enter Username";
         } else if (value.length < 8) {
           addError(error: kShortPassError);
-          return "";
+          return "Password should be greater than 8 character";
         }
         return null;
       },
@@ -167,10 +179,10 @@ class _SignFormState extends State<SignForm> {
       validator: (value) {
         if (value.isEmpty) {
           addError(error: kEmailNullError);
-          return "";
+          return "Please Enter Email Id";
         } else if (!emailValidatorRegExp.hasMatch(value)) {
           addError(error: kInvalidEmailError);
-          return "";
+          return "Email is not Valid";
         }
         return null;
       },

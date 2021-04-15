@@ -1,9 +1,14 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 
 class model{
-  String purl, price, st, title, id;
+  String purl, price, title, id, st;
 
-  // model(this.purl, this.price, this.title, this.st, this.id);
+  // model(
+  //     this.price,
+  //     this.purl,
+  //     this.st,
+  //     this.title
+  //     );
 
   String getId(){
     return id;

@@ -1,5 +1,6 @@
 import 'package:de_project/screens/fav_items/fav_items.dart';
 import 'package:de_project/screens/home/home_screen.dart';
+import 'package:de_project/screens/profile/data/UploadData.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:de_project/screens/profile/profile_screen.dart';
@@ -56,7 +57,9 @@ class CustomBottomNavBar extends StatelessWidget {
               ),
               IconButton(
                 icon: SvgPicture.asset("assets/icons/Chat bubble Icon.svg"),
-                onPressed: () {},
+                onPressed: () {
+                  // Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => UploadData()));
+                },
               ),
               IconButton(
                 icon: SvgPicture.asset(

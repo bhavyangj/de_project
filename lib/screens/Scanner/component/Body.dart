@@ -1,8 +1,11 @@
+import 'dart:collection';
+
 import 'package:barcode_scan_fix/barcode_scan.dart';
 import 'package:de_project/components/default_button.dart';
 import 'package:de_project/constants.dart';
 import 'package:de_project/models/model.dart';
 import 'package:de_project/size_config.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -17,30 +20,31 @@ class _BodyState extends State<Body>{
   final name = "Name";
   List<model> dataList = [];
   String barcodeScanRes ="";
+  // var formKey = Global<FormState>();
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+
   var values, keys;
 
-  // void initState(){
-  //   super.initState();
-  //   DatabaseReference referenceData = FirebaseDatabase.instance.reference().child("data").child(barcodeScanRes);
-  //   referenceData.once().then((DataSnapshot dataSnapshot){
-  //     dataList.clear();
-  //     keys = dataSnapshot.value.keys;
-  //     values = dataSnapshot.value;
-  //     print("keys: "+ keys);
-  //     print("values: "+ values);
-  //
-  //     for(var key in keys){
-  //       model model1 = new model(
-  //           values[key]["purl"],
-  //           values[key]["price"],
-  //           values[key]["st"],
-  //           values[key]["title"],
-  //       );
-  //       dataList.add(model1);
-  //
-  //     }
-  //   });
-  // }
+  @override
+  void initState(){
+    super.initState();
+    DatabaseReference referenceData = FirebaseDatabase.instance.reference().child("data");
+    referenceData.once().then((DataSnapshot dataSnapshot){
+      dataList.clear();
+      var keys = dataSnapshot.value.keys;
+      var values = dataSnapshot.value;
+      for(var key in keys){
+        model model1 = new model(
+          values[key]["price"],
+          values[key]["purl"],
+          values[key]["st"],
+          values[key]["title"],
+        );
+        dataList.add(model1);
+      }
+    });
+  }
+
   Future<void> scanBarcodeNormal() async {
     try {
       String barcode = await BarcodeScanner.scan();
@@ -56,7 +60,7 @@ class _BodyState extends State<Body>{
     if (!mounted) return;
   }
 
-  var title = null, price = null, st = null, purl = null;
+  var title, price, st, purl;
 
   @override
   Widget build(BuildContext context) {
@@ -107,7 +111,8 @@ class _BodyState extends State<Body>{
                     child: Text("Get product data"),
                 ),
                 // Text(title ?? "name")
-                 title == null ? Text(''):Row(
+                 title == null ? Text(''):
+                 Row(
                   children: [
                     SizedBox(
                       width: 88,
@@ -151,14 +156,42 @@ class _BodyState extends State<Body>{
                     ),
                   ],
                 ),
+                // Form(
+                //   key: formKey,
+                //   o
+                // ),
                 DefaultButton(
                   text: "Add To Cart",
-                  press: () {},
+                  press: () {
+                    AddToCart();
+                  },
                 ),
               ],
             ),
           ),
         )
     );
+  }
+  final FirebaseAuth auth = FirebaseAuth.instance;
+
+  Future<void> AddToCart() async{
+    // initState();
+    final User user = auth.currentUser;
+    final uid = user.uid;
+    // if(formKey.currentState.validate()){
+      print("validate is formkey .....");
+      DatabaseReference databaseReference = FirebaseDatabase.instance.reference().child("data").child(uid);
+      String uploadId = databaseReference.push().key;
+      // print("uploadId: " + uploadId);
+      HashMap map = new HashMap();
+      map ["title"] = title;
+      map ["price"] = price;
+      map ["st"] = st;
+      map ["purl"] = purl;
+      databaseReference.child(uploadId).set(map);
+    // }
+    // else{
+    //   print("formkey is not valid .....");
+    // }
   }
 }

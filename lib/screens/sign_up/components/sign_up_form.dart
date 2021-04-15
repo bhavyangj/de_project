@@ -19,10 +19,22 @@ class _SignUpFormState extends State<SignUpForm> {
   final _formKey = GlobalKey<FormState>();
   String _email;
   String _password;
-  String _conform_password;
-  final auth = FirebaseAuth.instance;
+  // ignore: non_constant_identifier_names
+  String _confirm_password;
   bool remember = false;
   final List<String> errors = [];
+
+  FirebaseAuth auth = FirebaseAuth.instance;
+  Future<void> register() async{
+    await auth.createUserWithEmailAndPassword(email: _email, password: _password)
+        .then((value){
+      Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) =>
+          // HomeScreen(value.user.email)
+          HomeScreen()
+      ));
+    });
+
+  }
 
   void addError({String error}) {
     if (!errors.contains(error))
@@ -57,10 +69,9 @@ class _SignUpFormState extends State<SignUpForm> {
               if (_formKey.currentState.validate()) {
                 _formKey.currentState.save();
                 // if all are valid then go to success screen
-                Navigator.pushNamed(context, CompleteProfileScreen.routeName);
+                register();
               }
-              auth.createUserWithEmailAndPassword(email: _email, password: _password);
-              Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => HomeScreen()));
+              // auth.createUserWithEmailAndPassword(email: _email, password: _password);
             },
           ),
         ],
@@ -71,24 +82,24 @@ class _SignUpFormState extends State<SignUpForm> {
   TextFormField buildConformPassFormField() {
     return TextFormField(
       obscureText: true,
-      onSaved: (newValue) => _conform_password = newValue,
+      onSaved: (newValue) => _confirm_password = newValue,
       onChanged: (value) {
         setState(() {
-          _conform_password = value;
+          _confirm_password = value;
         });
         if (value.isNotEmpty) {
           removeError(error: kPassNullError);
-        } else if (value.isNotEmpty && _password == _conform_password) {
+        } else if (value.isNotEmpty && _password == _confirm_password) {
           removeError(error: kMatchPassError);
         }
       },
       validator: (value) {
         if (value.isEmpty) {
           addError(error: kPassNullError);
-          return "";
+          return "Password doesn't empty";
         } else if ((_password != value)) {
           addError(error: kMatchPassError);
-          return "";
+          return "Password doesn't match";
         }
         return null;
       },
@@ -120,10 +131,10 @@ class _SignUpFormState extends State<SignUpForm> {
       validator: (value) {
         if (value.isEmpty) {
           addError(error: kPassNullError);
-          return "";
+          return "password doesn't empty";
         } else if (value.length < 8) {
           addError(error: kShortPassError);
-          return "";
+          return "password should be greater than 8 character";
         }
         return null;
       },
@@ -156,10 +167,10 @@ class _SignUpFormState extends State<SignUpForm> {
       validator: (value) {
         if (value.isEmpty) {
           addError(error: kEmailNullError);
-          return "";
+          return "Please Enter Email Id";
         } else if (!emailValidatorRegExp.hasMatch(value)) {
           addError(error: kInvalidEmailError);
-          return "";
+          return "Email Id is not valid";
         }
         return null;
       },
